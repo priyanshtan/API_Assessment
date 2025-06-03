@@ -11,10 +11,7 @@ const protect = async (req, res, next) => {
 
     const token = authHeader.split(" ")[1];
 
-    // ✅ Debug log — shows the token and secret being used
-    console.log("Verifying token:", token);
-    console.log("Using secret:", process.env.JWT_SECRET);
-
+   
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = await User.findById(decoded.id);
 
