@@ -42,7 +42,7 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4M2VlZDMwZmRjZjU1MDRmZDNjMDk1NiIsImlhdCI6MTc0ODk1NDQxNn0.wqsXGBsAxR2hIk107Ri5nc2XLyQt9nMEhzCV5zMBJ-8"
+            "value": "Bearer <token>"
           }
         ],
         "url": {
@@ -67,7 +67,7 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4M2VlZDMwZmRjZjU1MDRmZDNjMDk1NiIsImlhdCI6MTc0ODk1NDQxNn0.wqsXGBsAxR2hIk107Ri5nc2XLyQt9nMEhzCV5zMBJ-8"
+            "value": "Bearer <token>"
           }
         ],
         "url": {
@@ -102,7 +102,7 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4M2VlZDMwZmRjZjU1MDRmZDNjMDk1NiIsImlhdCI6MTc0ODk1NDQxNn0.wqsXGBsAxR2hIk107Ri5nc2XLyQt9nMEhzCV5zMBJ-8"
+            "value": "Bearer <token>"
           }
         ],
         "url": {
