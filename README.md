@@ -82,8 +82,7 @@ Get users grouped by the day they registered. `week_number` can be comma-separat
 
 1. Open Postman
 2. Import the collection: `nodejs-api-machine-test.postman_collection.json`
-3. (Optional) Import the environment: `nodejs-api-environment.postman_environment.json`
-4. Use the `Register` request to get a token, which is automatically saved for subsequent calls
+3. Use the `Register` request to get a token, which is automatically saved for subsequent calls
 
 ---
 
