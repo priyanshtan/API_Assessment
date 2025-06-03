@@ -1,0 +1,130 @@
+{
+  "info": {
+    "name": "Node.js API Machine Test",
+    "_postman_id": "api-collection-id",
+    "description": "Collection for Node.js Machine Test APIs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Register User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\",\n    \"address\": \"123 Street\",\n    \"latitude\": 28.61,\n    \"longitude\": 77.23\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/users/register",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "users",
+            "register"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Toggle User Status",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4M2VlZDMwZmRjZjU1MDRmZDNjMDk1NiIsImlhdCI6MTc0ODk1NDQxNn0.wqsXGBsAxR2hIk107Ri5nc2XLyQt9nMEhzCV5zMBJ-8"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:5000/api/users/toggle-status",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "users",
+            "toggle-status"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Distance",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4M2VlZDMwZmRjZjU1MDRmZDNjMDk1NiIsImlhdCI6MTc0ODk1NDQxNn0.wqsXGBsAxR2hIk107Ri5nc2XLyQt9nMEhzCV5zMBJ-8"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:5000/api/users/distance?destination_latitude=28.67&destination_longitude=77.12",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "users",
+            "distance"
+          ],
+          "query": [
+            {
+              "key": "destination_latitude",
+              "value": "28.67"
+            },
+            {
+              "key": "destination_longitude",
+              "value": "77.12"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get User Listing",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4M2VlZDMwZmRjZjU1MDRmZDNjMDk1NiIsImlhdCI6MTc0ODk1NDQxNn0.wqsXGBsAxR2hIk107Ri5nc2XLyQt9nMEhzCV5zMBJ-8"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:5000/api/users/list?week_number=1,2",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "users",
+            "list"
+          ],
+          "query": [
+            {
+              "key": "week_number",
+              "value": "1,2"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
