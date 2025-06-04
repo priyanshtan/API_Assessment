@@ -21,7 +21,7 @@ const protect = async (req, res, next) => {
 
     next();
   } catch (err) {
-    console.error("JWT Error:", err.message); // Only print message, not full stack
+    console.error("JWT Error:", err.message);
     res.status(401).json({ message: "Invalid token" });
   }
 };
