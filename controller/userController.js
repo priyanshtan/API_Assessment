@@ -10,13 +10,20 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ message: "All fields are required" });
     }
     const existing = await User.findOne({ email });
-    if (existing) return res.status(400).json({ message: "Email already exists" });
+    if (existing)
+      return res.status(400).json({ message: "Email already exists" });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({ name, email, password: hashedPassword, address, latitude, longitude });
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      address,
+      latitude,
+      longitude,
+    });
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-    console.log("Signing with:", process.env.JWT_SECRET);
-
+    // console.log("Signing with:", process.env.JWT_SECRET);
 
     res.status(200).json({
       status_code: "200",
@@ -29,8 +36,8 @@ const registerUser = async (req, res) => {
         longitude: user.longitude,
         status: user.status,
         register_at: user.register_at,
-        token
-      }
+        token,
+      },
     });
   } catch (err) {
     res.status(500).json({ message: "Server error" });
@@ -40,9 +47,17 @@ const registerUser = async (req, res) => {
 const toggleUserStatus = async (req, res) => {
   try {
     await User.updateMany({}, [
-      { $set: { status: { $cond: [{ $eq: ["$status", "active"] }, "inactive", "active"] } } }
+      {
+        $set: {
+          status: {
+            $cond: [{ $eq: ["$status", "active"] }, "inactive", "active"],
+          },
+        },
+      },
     ]);
-    res.status(200).json({ status_code: "200", message: "All users status toggled" });
+    res
+      .status(200)
+      .json({ status_code: "200", message: "All users status toggled" });
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
@@ -52,11 +67,24 @@ const getDistance = async (req, res) => {
   try {
     const { destination_latitude, destination_longitude } = req.query;
     if (!destination_latitude || !destination_longitude) {
-      return res.status(400).json({ message: "Destination coordinates required" });
+      return res
+        .status(400)
+        .json({ message: "Destination coordinates required" });
     }
     const user = req.user;
-    const distance = getDistanceFromLatLonInKm(user.latitude, user.longitude, parseFloat(destination_latitude), parseFloat(destination_longitude));
-    res.status(200).json({ status_code: "200", message: "Distance fetched", distance: `${distance}km` });
+    const distance = getDistanceFromLatLonInKm(
+      user.latitude,
+      user.longitude,
+      parseFloat(destination_latitude),
+      parseFloat(destination_longitude)
+    );
+    res
+      .status(200)
+      .json({
+        status_code: "200",
+        message: "Distance fetched",
+        distance: `${distance}km`,
+      });
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
@@ -65,20 +93,74 @@ const getDistance = async (req, res) => {
 const getUserListing = async (req, res) => {
   try {
     const { week_number } = req.query;
-    const weekNumbers = week_number.split(",").map(Number);
-
-    const users = await User.find({});
-    const data = {};
-
-    for (const num of weekNumbers) {
-      const dayName = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"][num];
-      data[dayName] = users.filter(u => new Date(u.register_at).getDay() === num).map(u => ({ name: u.name, email: u.email }));
+    if (!week_number) {
+      return res.status(400).json({ message: "Week number is required" });
     }
 
-    res.status(200).json({ status_code: "200", message: "Users listed by weekday", data });
+    const weekNumbers = week_number.split(",").map(Number);
+
+    const mongoDays = weekNumbers.map(d => d + 1);
+
+    const dayMap = {
+      1: "sunday",
+      2: "monday",
+      3: "tuesday",
+      4: "wednesday",
+      5: "thursday",
+      6: "friday",
+      7: "saturday"
+    };
+
+    const result = {};
+    for (const d of mongoDays) {
+      result[dayMap[d]] = [];
+    }
+
+    const users = await User.aggregate([
+      {
+        $addFields: {
+          weekday: { $dayOfWeek: "$register_at" } 
+        }
+      },
+      {
+        $match: {
+          weekday: { $in: mongoDays }
+        }
+      },
+      {
+        $project: {
+          name: 1,
+          email: 1,
+          weekday: 1
+        }
+      },
+      {
+        $group: {
+          _id: "$weekday",
+          users: { $push: { name: "$name", email: "$email" } }
+        }
+      }
+    ]);
+
+    for (const group of users) {
+      const dayName = dayMap[group._id];
+      result[dayName] = group.users;
+    }
+
+    res.status(200).json({
+      status_code: "200",
+      message: "Users listed by weekday",
+      data: result
+    });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 };
 
-module.exports = { registerUser, toggleUserStatus, getDistance, getUserListing };
+module.exports = {
+  registerUser,
+  toggleUserStatus,
+  getDistance,
+  getUserListing,
+};
